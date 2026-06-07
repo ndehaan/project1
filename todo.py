@@ -24,6 +24,15 @@ def add_task(title):
 
 
 def list_tasks():
+    tasks = [t for t in load_tasks() if not t["done"]]
+    if not tasks:
+        print("No incomplete tasks.")
+        return
+    for task in tasks:
+        print(f"[ ] {task['id']}. {task['title']}")
+
+
+def list_all_tasks():
     tasks = load_tasks()
     if not tasks:
         print("No tasks yet. Add one with: python todo.py add \"your task\"")
@@ -58,6 +67,7 @@ def print_usage():
     print("Usage:")
     print("  python todo.py add \"task title\"")
     print("  python todo.py list")
+    print("  python todo.py list-all")
     print("  python todo.py complete <id>")
     print("  python todo.py delete <id>")
 
@@ -73,6 +83,8 @@ if __name__ == "__main__":
         add_task(" ".join(sys.argv[2:]))
     elif command == "list":
         list_tasks()
+    elif command == "list-all":
+        list_all_tasks()
     elif command == "complete" and len(sys.argv) == 3:
         complete_task(int(sys.argv[2]))
     elif command == "delete" and len(sys.argv) == 3:
